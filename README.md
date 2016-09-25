@@ -6,6 +6,8 @@ array of 3D boxes, which I rotate in a coordinated
 fashion when spots are revealed.  I also do an explosion
 effect when the player loses.
 
+![example.gif](example.gif)
+
 ## Lessons Learned
 
 The one snag I hit, which I spent hours working out, was:
