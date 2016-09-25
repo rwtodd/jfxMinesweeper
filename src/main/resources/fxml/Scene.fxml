@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"  fx:controller="rwt.game.minesweeper.FXMLController">
+<top>
+        <MenuBar>
+            <menus>
+            <Menu text="File">
+                <items>
+                    <MenuItem text="New Game" onAction="#btnNewGame"></MenuItem>
+                    <SeparatorMenuItem />
+                    <MenuItem text="Exit" onAction="#btnExit"></MenuItem>
+                </items>
+            </Menu>
+            </menus>
+        </MenuBar>       
+</top>
+<center>
+   <ScrollPane vbarPolicy="NEVER" hbarPolicy="NEVER" maxHeight="9999" maxWidth="9999" fitToHeight="true" fitToWidth="true"  >  
+     <Pane fx:id="board" >
+     </Pane>
+   </ScrollPane>
+</center>
+</BorderPane>

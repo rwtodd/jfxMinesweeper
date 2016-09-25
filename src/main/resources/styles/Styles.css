@@ -1,0 +1,11 @@
+.button {
+    -fx-font-weight: bold;
+}
+
+#board {
+    -fx-background-color: green;
+}
+
+#board.sploded {
+    -fx-background-color: red;
+}
