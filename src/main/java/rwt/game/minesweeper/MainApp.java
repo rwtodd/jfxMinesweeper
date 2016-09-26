@@ -8,6 +8,8 @@ package rwt.game.minesweeper;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Camera;
 import javafx.scene.Parent;
@@ -22,11 +24,19 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+        Parent root = fxmlLoader.load();
+        FXMLController controller = fxmlLoader.getController();
         
         Scene scene = new Scene(root, 800, 600, true, SceneAntialiasing.BALANCED);
         scene.getStylesheets().add("/styles/Styles.css");
-        
+
+        ChangeListener cl = (val, ov, nv) -> {
+                Platform.runLater(controller::resize);
+        };
+        scene.widthProperty().addListener(cl);
+        scene.heightProperty().addListener(cl);                    
+
         // With the perspective camera it looks slightly different
 //        PerspectiveCamera cam = new PerspectiveCamera(false);
 //        cam.setFieldOfView(60);

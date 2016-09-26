@@ -15,10 +15,6 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.animation.*;
 import javafx.geometry.Point3D;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.shape.Path;
 
 /**
  *
@@ -26,44 +22,65 @@ import javafx.scene.shape.Path;
  */
 public final class TileBox extends StackPane {
     
+    // we'll have to store handles for our subcomponents
+    // to make it easy to update them quickly.
+    // The original design fetched them from getChildren() but
+    // just seemed like too much runtime work to avoid storing a few
+    // object handles.
+    private Box outer, inner;
+    private Text label;
+    
+    // Size the sub-components to target a given width and height.
+    // Choose a font size that fits in the height, by guess-and-check
+    public void setNewSize(double width, double height) {
+        outer.setWidth(width);
+        outer.setHeight(height);
+        outer.setDepth(Math.min(width, height) * 0.3);
+        
+        inner.setWidth(width * 0.8);
+        inner.setHeight(height * 0.8);
+        inner.setDepth(Math.min(width, height) * 0.1);
+        inner.setTranslateZ(-outer.getDepth()*0.5);
+        
+        if(label == null) return; // some TileBoxes don't have labels.
+        
+        Font f = Font.font(height + 4);
+        label.setFont(f);
+
+        while (label.getBoundsInLocal().getHeight() >= height) {
+            f = Font.font(f.getSize() - 2);
+            label.setFont(f);
+        }
+       
+        label.setTranslateZ(outer.getDepth()*0.5);
+    }
+    
     public TileBox(double width, double height, int n) {
         super();
    
         flipped = false;
         flagged = false;
         
-        Box b = new Box(width, height, Math.min(width,height)*.3);
-        b.setTranslateX(0);
-        b.setTranslateY(0);
-        b.setTranslateZ(0);
+        outer = new Box();
         PhongMaterial mat = new PhongMaterial(Color.LIGHTYELLOW);
-        b.setMaterial(mat);
-        getChildren().add(b);
+        outer.setMaterial(mat);
+        getChildren().add(outer);
         
-        Box b2 = new Box(width*0.8, height*0.8, Math.min(width,height)*.1);
+        inner = new Box();
         mat = new PhongMaterial(Color.WHITESMOKE);
-        b2.setMaterial(mat);
-        b2.setTranslateX(0);
-        b2.setTranslateY(0);
-        b2.setTranslateZ(-b.getDepth()*0.5);
-        getChildren().add(b2);
+        inner.setMaterial(mat);
+        getChildren().add(inner);
         
         if (n > 0) {
-            Text t = new Text(0, 0, Integer.toString(n));
-            Font f = Font.font(height + 4);
-            t.setFont(f);
-          
-            while(t.getBoundsInLocal().getHeight() >= height) {
-                f = Font.font(f.getSize()-2);
-                t.setFont(f);
-            }
-            t.setFill(Color.BLUE);
-            t.setRotationAxis(javafx.scene.transform.Rotate.X_AXIS);
-            t.setRotate(180);
-            t.setTranslateZ(b.getDepth() * 0.50);
-            getChildren().add(t);
+            label = new Text(0, 0, Integer.toString(n));
+            label.setFill(Color.BLUE);
+            label.setRotationAxis(javafx.scene.transform.Rotate.X_AXIS);
+            label.setRotate(180);
+            getChildren().add(label);
         } else {
+            label = null;
         }
+        setNewSize(width, height);
     }
     
     private boolean flipped;
@@ -83,24 +100,9 @@ public final class TileBox extends StackPane {
         rt.setDelay(delay);    
         return rt;
     }
-
+    
     public void flag() {
-        // This is not ideal... but: find the smallest box
-        // and change the color.   It would be better to do
-        // something cooler like draw a flag on it.
-        Box smallBox = null;
-        for(Node n: getChildren()) {
-            if(n instanceof Box) {
-                Box current = ((Box)n);
-                if(smallBox == null) {
-                    smallBox = current;
-                }
-                if(current.getWidth() < smallBox.getWidth() ) {
-                        smallBox = current;
-                }
-            }
-        }
-        smallBox.setMaterial(new PhongMaterial(flagged?Color.WHITESMOKE:Color.AQUAMARINE));
+        inner.setMaterial(new PhongMaterial(flagged?Color.WHITESMOKE:Color.AQUAMARINE));        
         flagged = !flagged;  // set/unset the flag.
     }
     

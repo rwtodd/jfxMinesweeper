@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javafx.animation.*;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -46,11 +47,27 @@ public class FXMLController implements Initializable {
     private MineField   mineField;
     private TileBox[][] mineFieldView;
     
+    public void resize() {
+        final double height =  board.getHeight() / TILES;
+        final double width = board.getWidth() / TILES;
+
+        for(int y = 0; y < TILES; ++y) {
+            for(int x = 0; x < TILES; ++x) {
+                TileBox b = mineFieldView[x][y];
+                b.setNewSize(width,height);
+                b.setPrefSize(width, height);
+                b.setLayoutX(x*width);
+                b.setLayoutY(y*height);
+            }
+        }
+    }
+    
     private void setupBoard() {
+        // some initial bookkeeping...
         overlays.getChildren().clear();
         board.getChildren().clear();
         board.getStyleClass().clear();
-        
+                
         mineField = new MineField(TILES, TILES, PCTBOMBS);
         _statusTextProperty.set("There are " + Integer.toString(mineField.howManyMines()) + " mines.");
         
