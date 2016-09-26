@@ -21,9 +21,10 @@
         </MenuBar>       
 </top>
 <center>
-   <ScrollPane vbarPolicy="NEVER" hbarPolicy="NEVER" maxHeight="9999" maxWidth="9999" fitToHeight="true" fitToWidth="true"  >  
-     <Pane fx:id="board" >
-     </Pane>
+   <ScrollPane vbarPolicy="NEVER" hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true"  maxHeight="9999" maxWidth="9999"  >  
+     <StackPane fx:id="overlays">
+         <Pane fx:id="board" />
+     </StackPane>
    </ScrollPane>
 </center>
 <bottom>

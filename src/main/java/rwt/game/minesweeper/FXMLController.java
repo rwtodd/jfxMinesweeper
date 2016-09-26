@@ -5,6 +5,7 @@
  */
 package rwt.game.minesweeper;
 
+import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,15 +17,20 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
+import javafx.geometry.Insets;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class FXMLController implements Initializable {
 
-    @FXML
-    private Pane board;
+    @FXML private Pane board;
+    @FXML private StackPane overlays;
     
     // a status text property to bind to FXML... 
     private StringProperty _statusTextProperty = new SimpleStringProperty("Ok.");
@@ -41,9 +47,9 @@ public class FXMLController implements Initializable {
     private TileBox[][] mineFieldView;
     
     private void setupBoard() {
+        overlays.getChildren().clear();
         board.getChildren().clear();
         board.getStyleClass().clear();
-        Group g = new Group();
         
         mineField = new MineField(TILES, TILES, PCTBOMBS);
         _statusTextProperty.set("There are " + Integer.toString(mineField.howManyMines()) + " mines.");
@@ -72,10 +78,10 @@ public class FXMLController implements Initializable {
                         handleClick(theX, theY);
                     }
                 });
-                g.getChildren().add(b);                  
+                board.getChildren().add(b);                  
             }  
         }
-        board.getChildren().add(g);
+        overlays.getChildren().add(board);
     }
     
     // if the only un-flipped tiles are bombs, you win!
@@ -100,7 +106,14 @@ public class FXMLController implements Initializable {
         endgame.setCycleCount(4);
         endgame.getChildren().addAll(lst);
         setStatusText("You Win!");       
-        endgame.play(); 
+        endgame.play();
+        Label winner = new Label("You Win!!!");
+        winner.setTranslateZ(-50.0);
+        winner.setFont(Font.font(40));
+        winner.setTextFill(Color.GREEN);
+        winner.setPadding(new Insets(15));
+        winner.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW,null,null)));
+        overlays.getChildren().add(winner);
     }
     
     private void handleClick(final int x, final int y) { 
