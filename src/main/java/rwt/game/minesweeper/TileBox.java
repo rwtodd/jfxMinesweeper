@@ -15,6 +15,8 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.animation.*;
 import javafx.geometry.Point3D;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.shape.Path;
 
 /**
@@ -46,14 +48,14 @@ public final class TileBox extends StackPane {
         
         if (n > 0) {
             Text t = new Text(0, 0, Integer.toString(n));
-            Font f = Font.font(height);
+            Font f = Font.font(height + 4);
             t.setFont(f);
-//            while(t.getLayoutBounds().getHeight() >= height) {
-//                f = Font.font(f.getSize()-1);
-//                t.setFont(f);
-//            }
+          
+            while(t.getBoundsInLocal().getHeight() >= height) {
+                f = Font.font(f.getSize()-2);
+                t.setFont(f);
+            }
             t.setFill(Color.BLUE);
-            t.setFont(Font.font(Math.min(width,height)/3));
             t.setRotationAxis(javafx.scene.transform.Rotate.X_AXIS);
             t.setRotate(180);
             t.setTranslateZ(b.getDepth() * 0.50);
