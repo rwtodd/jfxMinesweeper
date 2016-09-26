@@ -8,6 +8,8 @@ effect when the player loses.
 
 ![example.gif](example.gif)
 
+![example2.png](example2.png)
+
 ## Lessons Learned
 
 The one snag I hit, which I spent hours working out, was:
