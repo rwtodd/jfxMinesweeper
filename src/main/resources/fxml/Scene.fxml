@@ -6,7 +6,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"  fx:controller="rwt.game.minesweeper.FXMLController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="rwt.game.minesweeper.FXMLController">
 <top>
         <MenuBar>
             <menus>
@@ -26,4 +26,13 @@
      </Pane>
    </ScrollPane>
 </center>
+<bottom>
+    <FlowPane >
+        <padding>
+            <javafx.geometry.Insets left="10" right="10" top="10" bottom="10" />
+        </padding>
+        <Label>Left-Click Uncovers, Right-Click Flags | </Label>           
+        <Label text="${controller.statusText}" /> 
+    </FlowPane>
+</bottom>
 </BorderPane>

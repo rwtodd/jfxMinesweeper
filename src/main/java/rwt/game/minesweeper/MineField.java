@@ -13,23 +13,35 @@ import java.util.Random;
  */
 public class MineField {
    private final byte[][] field;
+   private int numberOfMines;
    
    public MineField(final int w, final int h, double pct) {
        field = new byte[w][h];
        Random rnd = new Random();
+       numberOfMines = 0;
        
        // first place the bombs... (-1 == BOMB!)
        for(int y = 0; y < h; ++y) {
            for(int x = 0; x < w; ++x) {
-               field[x][y] = (byte)(( rnd.nextFloat() < pct ) ? -1 : 0);
+               if(rnd.nextFloat() < pct) {
+                  field[x][y] = -1;
+                  numberOfMines++;
+               } else {
+                   field[x][y] = 0;
+               }
            }
        }
+       
        for(int y = 0; y < h; ++y) {
            for(int x = 0; x < w; ++x) {
                field[x][y] = (byte)(slowNeighborCount(x, y));
            }
        }
        
+   }
+   
+   public int howManyMines() {
+       return numberOfMines;
    }
    
    public boolean hasBomb(final int x, final int y) {

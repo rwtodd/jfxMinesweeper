@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import javafx.animation.*;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.shape.Path;
 
@@ -29,7 +30,8 @@ public final class TileBox extends StackPane {
         super();
    
         flipped = false;
-
+        flagged = false;
+        
         Box b = new Box(width, height, Math.min(width,height)*.3);
         b.setTranslateX(0);
         b.setTranslateY(0);
@@ -65,8 +67,10 @@ public final class TileBox extends StackPane {
     }
     
     private boolean flipped;
+    private boolean flagged;
     
     public boolean hasFlipped() { return flipped; }
+    public boolean isFlagged() { return flagged; }
     
     public javafx.animation.Transition flip(Duration delay) {
         flipped = true;
@@ -80,6 +84,26 @@ public final class TileBox extends StackPane {
         return rt;
     }
 
+    public void flag() {
+        // This is not ideal... but: find the smallest box
+        // and change the color.   It would be better to do
+        // something cooler like draw a flag on it.
+        Box smallBox = null;
+        for(Node n: getChildren()) {
+            if(n instanceof Box) {
+                Box current = ((Box)n);
+                if(smallBox == null) {
+                    smallBox = current;
+                }
+                if(current.getWidth() < smallBox.getWidth() ) {
+                        smallBox = current;
+                }
+            }
+        }
+        smallBox.setMaterial(new PhongMaterial(flagged?Color.WHITESMOKE:Color.AQUAMARINE));
+        flagged = !flagged;  // set/unset the flag.
+    }
+    
     Animation explode(final int diffx, final int diffy) {
          flipped = true;
          Random r = new Random();

@@ -7,13 +7,17 @@ package rwt.game.minesweeper;
 
 import java.net.URL;
 import java.util.List;
+import java.util.ArrayList;
 import javafx.animation.*;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -21,6 +25,12 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Pane board;
+    
+    // a status text property to bind to FXML... 
+    private StringProperty _statusTextProperty = new SimpleStringProperty("Ok.");
+    public StringProperty statusTextProperty() { return _statusTextProperty; }
+    public String getStatusText() { return _statusTextProperty.get(); }
+    public void setStatusText(String s) { _statusTextProperty.set(s); }
     
     private final static int TILES = 20;
     private final static double PCTBOMBS = 0.1;
@@ -36,6 +46,8 @@ public class FXMLController implements Initializable {
         Group g = new Group();
         
         mineField = new MineField(TILES, TILES, PCTBOMBS);
+        _statusTextProperty.set("There are " + Integer.toString(mineField.howManyMines()) + " mines.");
+        
         mineFieldView = new TileBox[TILES][TILES];
         
         final double height =  board.getHeight() / TILES;
@@ -54,7 +66,11 @@ public class FXMLController implements Initializable {
                 final int theX = x; 
                 final int theY = y;
                 b.setOnMouseClicked( ev -> { 
-                    handleClick(theX, theY);
+                    if(ev.getButton() == MouseButton.SECONDARY) {
+                        handleRightClick(theX, theY);
+                    } else {
+                        handleClick(theX, theY);
+                    }
                 });
                 g.getChildren().add(b);                  
             }  
@@ -62,13 +78,44 @@ public class FXMLController implements Initializable {
         board.getChildren().add(g);
     }
     
-
-    private void handleClick(final int x, final int y) {        
+    // if the only un-flipped tiles are bombs, you win!
+    private void checkForWin() {
+        for(int y = 0; y < mineFieldView[0].length; y++) {
+            for(int x = 0; x < mineFieldView.length; x++) {
+                if(!mineFieldView[x][y].hasFlipped() && 
+                        !mineField.hasBomb(x, y)) {
+                    return; // still more spots left!
+                }
+            }
+        }
+        
+        // if we got here, you won!  Animate all the tiles endlessly...
+        List<Transition> lst = new ArrayList<>();
+        for(int y = 0; y < mineFieldView[0].length; y++) {
+            for(int x = 0; x < mineFieldView.length; x++) {
+                lst.add(mineFieldView[x][y].flip(Duration.ZERO));
+            }
+        }
+        ParallelTransition endgame = new ParallelTransition();
+        endgame.setCycleCount(4);
+        endgame.getChildren().addAll(lst);
+        setStatusText("You Win!");       
+        endgame.play(); 
+    }
+    
+    private void handleClick(final int x, final int y) { 
+        if(mineFieldView[x][y].isFlagged()) return; // can't accidentally die!
+        
         if(mineField.hasBomb(x, y)) {
             handleExplosion(x,y);
         } else {
             handleNormalClick(x,y);
+            checkForWin();
         }   
+    }
+
+    private void handleRightClick(final int x, final int y) {
+        mineFieldView[x][y].flag();
     }
     
     private void recursiveFlip(int x, int y, final int origX, final int origY, List<Transition> flips) {
@@ -94,7 +141,7 @@ public class FXMLController implements Initializable {
      
     }
     private void handleNormalClick(final int x, final int y) {
-        List<Transition> transitions = new java.util.ArrayList<>();
+        List<Transition> transitions = new ArrayList<>();
         recursiveFlip(x, y, x, y, transitions);
         ParallelTransition pt = new ParallelTransition();
         pt.getChildren().addAll(transitions);
