@@ -75,7 +75,7 @@ public final class TileBox extends StackPane {
     public javafx.animation.Transition flip(Duration delay) {
         flipped = true;
        
-        RotateTransition rt = new RotateTransition(Duration.seconds(0.25),this);
+        RotateTransition rt = new RotateTransition(Duration.seconds(0.33),this);
         rt.setAxis(javafx.scene.transform.Rotate.X_AXIS);
         rt.setFromAngle(0);
         rt.setToAngle(180);

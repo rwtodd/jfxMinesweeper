@@ -137,7 +137,7 @@ public class FXMLController implements Initializable {
 
         // delay is relative to distance form origin...
         double dist = Math.sqrt((x - origX)*(x - origX)+(y-origY)*(y-origY));
-        flips.add(mineFieldView[x][y].flip(Duration.seconds(dist*0.02)));
+        flips.add(mineFieldView[x][y].flip(Duration.seconds(dist*0.04)));
 
         // now, flip neighbors, unless we had a number showing...
         if(mineField.countNeighbors(x, y) > 0) return;
