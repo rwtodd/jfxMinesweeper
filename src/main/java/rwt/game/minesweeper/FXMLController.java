@@ -5,6 +5,7 @@
  */
 package rwt.game.minesweeper;
 
+import java.io.IOException;
 import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.List;
@@ -17,8 +18,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -26,6 +31,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class FXMLController implements Initializable {
@@ -39,8 +47,10 @@ public class FXMLController implements Initializable {
     public String getStatusText() { return _statusTextProperty.get(); }
     public void setStatusText(String s) { _statusTextProperty.set(s); }
     
-    private final static int TILES = 20;
-    private final static double PCTBOMBS = 0.1;
+    // Here's the state we care about...
+    private int rowTiles = 20;
+    private int colTiles = 20;
+    private double pctBombs = 0.1;
     
     // most of the work of this controller is coordinating the MineField with
     // its visual representation in TileBoxes...
@@ -48,11 +58,12 @@ public class FXMLController implements Initializable {
     private TileBox[][] mineFieldView;
     
     public void resize() {
-        final double height =  board.getHeight() / TILES;
-        final double width = board.getWidth() / TILES;
+        
+        final double height =  board.getHeight() / rowTiles;
+        final double width = board.getWidth() / colTiles;
 
-        for(int y = 0; y < TILES; ++y) {
-            for(int x = 0; x < TILES; ++x) {
+        for(int y = 0; y < rowTiles; ++y) {
+            for(int x = 0; x < colTiles; ++x) {
                 TileBox b = mineFieldView[x][y];
                 b.setNewSize(width,height);
                 b.setPrefSize(width, height);
@@ -68,16 +79,16 @@ public class FXMLController implements Initializable {
         board.getChildren().clear();
         board.getStyleClass().clear();
                 
-        mineField = new MineField(TILES, TILES, PCTBOMBS);
+        mineField = new MineField(colTiles, rowTiles, pctBombs);
         _statusTextProperty.set("There are " + Integer.toString(mineField.howManyMines()) + " mines.");
         
-        mineFieldView = new TileBox[TILES][TILES];
+        mineFieldView = new TileBox[colTiles][rowTiles];
         
-        final double height =  board.getHeight() / TILES;
-        final double width = board.getWidth() / TILES;
+        final double height =  board.getHeight() / rowTiles;
+        final double width = board.getWidth() / colTiles;
         
-        for(int y = 0; y < TILES; ++y) {
-            for(int x = 0; x < TILES; ++x) {
+        for(int y = 0; y < rowTiles; ++y) {
+            for(int x = 0; x < colTiles; ++x) {
                 final TileBox b = new TileBox(width, height, mineField.countNeighbors(x, y));
                 mineFieldView[x][y] = b;
                 b.setPrefSize(width, height);
@@ -103,8 +114,8 @@ public class FXMLController implements Initializable {
     
     // if the only un-flipped tiles are bombs, you win!
     private void checkForWin() {
-        for(int y = 0; y < mineFieldView[0].length; y++) {
-            for(int x = 0; x < mineFieldView.length; x++) {
+        for(int y = 0; y < rowTiles; y++) {
+            for(int x = 0; x < colTiles; x++) {
                 if(!mineFieldView[x][y].hasFlipped() && 
                         !mineField.hasBomb(x, y)) {
                     return; // still more spots left!
@@ -114,8 +125,8 @@ public class FXMLController implements Initializable {
         
         // if we got here, you won!  Animate all the tiles endlessly...
         List<Transition> lst = new ArrayList<>();
-        for(int y = 0; y < mineFieldView[0].length; y++) {
-            for(int x = 0; x < mineFieldView.length; x++) {
+        for(int y = 0; y < rowTiles; y++) {
+            for(int x = 0; x < colTiles; x++) {
                 lst.add(mineFieldView[x][y].flip(Duration.ZERO));
             }
         }
@@ -182,8 +193,8 @@ public class FXMLController implements Initializable {
         board.getStyleClass().add("sploded");
         
         List<Animation> animations = new java.util.ArrayList<>();
-        for(int mfy = 0; mfy < mineFieldView[0].length; ++mfy) {
-            for(int mfx = 0; mfx < mineFieldView.length; ++mfx) {
+        for(int mfy = 0; mfy < rowTiles; ++mfy) {
+            for(int mfx = 0; mfx < colTiles; ++mfx) {
                 
                 animations.add(mineFieldView[mfx][mfy].explode(mfx - x, mfy - y));
             }
@@ -207,5 +218,29 @@ public class FXMLController implements Initializable {
     @FXML
     private void btnNewGame(ActionEvent e) {
         setupBoard();
+    }
+    
+    @FXML
+    private void btnOptions(ActionEvent e) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/OptionsScreen.fxml"));
+        Parent root = fxmlLoader.load();
+        OptionsScreenController controller = fxmlLoader.getController();
+        controller.initValues(colTiles, rowTiles, pctBombs);
+        
+        Scene scene = new Scene(root);
+        Stage st = new Stage(StageStyle.DECORATED);
+        st.setTitle("Options");
+        st.initOwner(board.getScene().getWindow());
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(scene);
+        st.sizeToScene();
+        st.setResizable(false);
+        st.showAndWait();
+        if (controller.newGameRequested()) {
+            colTiles = controller.getCols();
+            rowTiles = controller.getRows();
+            pctBombs = controller.getPctBombs();
+            setupBoard();
+        }
     }
 }

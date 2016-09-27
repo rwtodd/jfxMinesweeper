@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"  
+      styleClass="mainFxmlClass" 
+      fx:controller="rwt.game.minesweeper.OptionsScreenController"
+      spacing="10" 
+>
+    <padding>
+        <javafx.geometry.Insets left="10" right="10" top="10" bottom="10" />
+    </padding>
+    <stylesheets>
+        <URL value="@/styles/optionsscreen.css"/>
+    </stylesheets>
+        <Label maxWidth="9999" styleClass="title">Options</Label> 
+        <GridPane vgap="5" >
+            <padding><javafx.geometry.Insets left="5" right="5"/></padding>
+            <Label GridPane.rowIndex="0" GridPane.columnIndex="0">Rows:</Label>
+            <Slider GridPane.rowIndex="0" GridPane.columnIndex="1" min="5" max="50"   blockIncrement="1.0"  fx:id="rows" /> 
+            <Label GridPane.rowIndex="0" GridPane.columnIndex="2" text="${rows.value}" />  
+
+            <Label GridPane.rowIndex="1" GridPane.columnIndex="0">Cols:</Label>
+            <Slider GridPane.rowIndex="1" GridPane.columnIndex="1" min="5" max="50"  blockIncrement="1.0"  fx:id="cols" /> 
+            <Label GridPane.rowIndex="1" GridPane.columnIndex="2" text="${cols.value}" />  
+
+            <Label GridPane.rowIndex="2" GridPane.columnIndex="0">Bombs %:</Label>
+            <Slider GridPane.rowIndex="2" GridPane.columnIndex="1" min="1" max="50" blockIncrement="1.0"  fx:id="bombs" /> 
+            <Label GridPane.rowIndex="2" GridPane.columnIndex="2" text="${bombs.value}" />  
+        </GridPane>
+    
+   <Button maxWidth="9999" onAction="#okBtn">New Game</Button>
+</VBox>

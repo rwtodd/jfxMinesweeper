@@ -13,6 +13,7 @@
             <Menu text="File">
                 <items>
                     <MenuItem text="New Game" onAction="#btnNewGame"></MenuItem>
+                    <MenuItem text="Options" onAction="#btnOptions"></MenuItem>
                     <SeparatorMenuItem />
                     <MenuItem text="Exit" onAction="#btnExit"></MenuItem>
                 </items>

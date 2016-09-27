@@ -44,10 +44,11 @@ public final class TileBox extends StackPane {
         
         if(label == null) return; // some TileBoxes don't have labels.
         
-        Font f = Font.font(height + 4);
+        Font f = Font.font(Math.max(height,width) + 4);
         label.setFont(f);
 
-        while (label.getBoundsInLocal().getHeight() >= height) {
+        while ( (label.getBoundsInLocal().getHeight() >= height) || 
+                (label.getBoundsInLocal().getWidth() >= width) ) {
             f = Font.font(f.getSize() - 2);
             label.setFont(f);
         }
