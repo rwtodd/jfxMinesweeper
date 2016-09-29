@@ -10,11 +10,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
-import javafx.util.converter.NumberStringConverter;
 
 /**
  * FXML Controller class
@@ -25,6 +23,7 @@ public class OptionsScreenController implements Initializable {
 
     private boolean wantsNewGame;  // did the user press "New Game"?
     @FXML private Slider rows, cols, bombs;
+    @FXML private Button ngButton;
     
     /**
      * Initializes the controller class.
@@ -40,6 +39,10 @@ public class OptionsScreenController implements Initializable {
         wantsNewGame = false;
     }    
 
+    public void focusOnButton() {
+        ngButton.requestFocus();
+    }
+    
     @FXML private void okBtn(ActionEvent e) { 
         wantsNewGame = true;
         ((Stage)bombs.getScene().getWindow()).close(); // My eyes!  They burn!

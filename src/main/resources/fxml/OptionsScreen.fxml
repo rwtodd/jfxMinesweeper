@@ -34,5 +34,5 @@
             <Label GridPane.rowIndex="2" GridPane.columnIndex="2" text="${bombs.value}" />  
         </GridPane>
     
-   <Button maxWidth="9999" onAction="#okBtn">New Game</Button>
+   <Button fx:id="ngButton" maxWidth="9999" onAction="#okBtn">New Game</Button>
 </VBox>

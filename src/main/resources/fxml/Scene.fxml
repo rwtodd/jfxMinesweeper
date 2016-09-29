@@ -6,7 +6,9 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="rwt.game.minesweeper.FXMLController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="rwt.game.minesweeper.FXMLController"
+   onKeyTyped="#keyTyped" 
+>
 <top>
         <MenuBar>
             <menus>

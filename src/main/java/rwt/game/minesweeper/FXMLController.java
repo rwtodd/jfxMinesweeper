@@ -204,6 +204,27 @@ public class FXMLController implements Initializable {
         pt.getChildren().addAll(animations);
         pt.play();        
     }
+
+    // pressing the 'n' key starts a new game....    
+    @FXML
+    private void keyTyped(javafx.scene.input.KeyEvent kev) {
+        if ("n".equals(kev.getCharacter())) {
+            kev.consume();
+            if (board.getStyleClass().contains("sploded")) {
+                // if the game was over, start a new game...
+                setupBoard();
+            } else {
+                // if the game isn't over, pull up the options in case they
+                // pressed the key by accident...
+                try {
+                    btnOptions(null);
+                } catch (Exception e) {
+                    System.err.println(e.toString());
+                }
+            }
+        }
+
+    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -229,6 +250,7 @@ public class FXMLController implements Initializable {
         
         Scene scene = new Scene(root);
         Stage st = new Stage(StageStyle.DECORATED);
+        controller.focusOnButton();
         st.setTitle("Options");
         st.initOwner(board.getScene().getWindow());
         st.initModality(Modality.APPLICATION_MODAL);

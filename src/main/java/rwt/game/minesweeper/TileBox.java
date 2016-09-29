@@ -27,8 +27,15 @@ public final class TileBox extends StackPane {
     // The original design fetched them from getChildren() but
     // just seemed like too much runtime work to avoid storing a few
     // object handles.
-    private Box outer, inner;
-    private Text label;
+    private final Box outer, inner;
+    private final Text label;
+    
+    // share the colors among tiles...
+    private static final PhongMaterial BLACK = new PhongMaterial(Color.GOLD);
+    private static final PhongMaterial YELLOW  = new PhongMaterial(Color.LIGHTYELLOW);
+    private static final PhongMaterial WHITE = new PhongMaterial(Color.WHITESMOKE);
+    private static final PhongMaterial BLUE = new PhongMaterial(Color.AQUAMARINE);
+    
     
     // Size the sub-components to target a given width and height.
     // Choose a font size that fits in the height, by guess-and-check
@@ -63,18 +70,36 @@ public final class TileBox extends StackPane {
         flagged = false;
         
         outer = new Box();
-        PhongMaterial mat = new PhongMaterial(Color.LIGHTYELLOW);
-        outer.setMaterial(mat);
+        outer.setMaterial(TileBox.YELLOW);
         getChildren().add(outer);
+  
+        setOnMouseEntered(me -> { 
+           if(!flipped) {
+               outer.setMaterial(TileBox.BLACK);
+           }
+        });
+        setOnMouseExited(me -> {
+               outer.setMaterial(TileBox.YELLOW);
+        });
+        
         
         inner = new Box();
-        mat = new PhongMaterial(Color.WHITESMOKE);
-        inner.setMaterial(mat);
+        inner.setMaterial(TileBox.WHITE);
         getChildren().add(inner);
         
         if (n > 0) {
             label = new Text(0, 0, Integer.toString(n));
-            label.setFill(Color.BLUE);
+            javafx.scene.paint.Paint p = Color.BLACK;
+            switch(n) {
+                case 1: p = Color.BLUE; break;
+                case 2: p = Color.GREEN; break;
+                case 3: p = Color.RED; break;
+                case 4: p = Color.NAVY; break;
+                case 5: p = Color.CRIMSON; break;
+                case 6: p = Color.DARKGREEN; break;
+                case 7: p = Color.DARKORANGE; break;
+            }
+            label.setFill(p);
             label.setRotationAxis(javafx.scene.transform.Rotate.X_AXIS);
             label.setRotate(180);
             getChildren().add(label);
@@ -92,7 +117,8 @@ public final class TileBox extends StackPane {
     
     public javafx.animation.Transition flip(Duration delay) {
         flipped = true;
-       
+        outer.setMaterial(TileBox.YELLOW);  // ensure that the box doesn't stay black
+        
         RotateTransition rt = new RotateTransition(Duration.seconds(0.33),this);
         rt.setAxis(javafx.scene.transform.Rotate.X_AXIS);
         rt.setFromAngle(0);
@@ -103,7 +129,7 @@ public final class TileBox extends StackPane {
     }
     
     public void flag() {
-        inner.setMaterial(new PhongMaterial(flagged?Color.WHITESMOKE:Color.AQUAMARINE));        
+        inner.setMaterial(flagged?TileBox.WHITE:TileBox.BLUE);        
         flagged = !flagged;  // set/unset the flag.
     }
     
