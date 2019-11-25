@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+
+group = 'org.rwtodd'
+version = '1.0'
+description = 'MineSweeper'
+
+
+repositories {
+   mavenCentral()
+}
+
+javafx {
+   version = "13"
+   modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+dependencies {
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['--release','13'])
+}
+
+jar {
+  manifest {
+    attributes 'Main-Class': 'rwt.game.minesweeper.MainApp'
+  }
+}
+
+application {
+   mainClassName = 'rwt.game.minesweeper.MainApp'
+}
