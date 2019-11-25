@@ -110,6 +110,7 @@ public class FXMLController implements Initializable {
             }  
         }
         overlays.getChildren().add(board);
+        Platform.runLater(System::gc);
     }
     
     // if the only un-flipped tiles are bombs, you win!
@@ -152,7 +153,8 @@ public class FXMLController implements Initializable {
         } else {
             handleNormalClick(x,y);
             checkForWin();
-        }   
+        }
+        Platform.runLater(System::gc);
     }
 
     private void handleRightClick(final int x, final int y) {

@@ -31,7 +31,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root, 800, 600, true, SceneAntialiasing.BALANCED);
         scene.getStylesheets().add("/styles/Styles.css");
 
-        ChangeListener cl = (val, ov, nv) -> {
+        ChangeListener<? super java.lang.Number> cl = (val, ov, nv) -> {
                 Platform.runLater(controller::resize);
         };
         scene.widthProperty().addListener(cl);
