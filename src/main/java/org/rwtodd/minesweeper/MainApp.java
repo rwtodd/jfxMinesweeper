@@ -1,10 +1,9 @@
 /*
  * Copyright Richard Todd. I put the code under the
- * GPL v2.0.  See the LICENSE file in the repository.
- * for more information.
+ * MIT License
  */
 
-package rwt.game.minesweeper;
+package org.rwtodd.minesweeper;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -24,12 +23,13 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("fxml/Scene.fxml"));
         Parent root = fxmlLoader.load();
         FXMLController controller = fxmlLoader.getController();
         
         Scene scene = new Scene(root, 800, 600, true, SceneAntialiasing.BALANCED);
-        scene.getStylesheets().add("/styles/Styles.css");
+        //scene.getStylesheets().add("fxml/Styles.css");
 
         ChangeListener<? super java.lang.Number> cl = (val, ov, nv) -> {
                 Platform.runLater(controller::resize);

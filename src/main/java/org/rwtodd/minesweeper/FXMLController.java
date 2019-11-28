@@ -1,9 +1,8 @@
 /*
  * Copyright Richard Todd. I put the code under the
- * GPL v2.0.  See the LICENSE file in the repository.
- * for more information.
+ * MIT License.
  */
-package rwt.game.minesweeper;
+package org.rwtodd.minesweeper;
 
 import java.io.IOException;
 import javafx.scene.control.Label;
@@ -245,7 +244,7 @@ public class FXMLController implements Initializable {
     
     @FXML
     private void btnOptions(ActionEvent e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/OptionsScreen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/OptionsScreen.fxml"));
         Parent root = fxmlLoader.load();
         OptionsScreenController controller = fxmlLoader.getController();
         controller.initValues(colTiles, rowTiles, pctBombs);

@@ -9,14 +9,14 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"  
       styleClass="mainFxmlClass" 
-      fx:controller="rwt.game.minesweeper.OptionsScreenController"
+      fx:controller="org.rwtodd.minesweeper.OptionsScreenController"
       spacing="10" 
 >
     <padding>
         <javafx.geometry.Insets left="10" right="10" top="10" bottom="10" />
     </padding>
     <stylesheets>
-        <URL value="@/styles/optionsscreen.css"/>
+        <URL value="@optionsscreen.css"/>
     </stylesheets>
         <Label maxWidth="9999" styleClass="title">Options</Label> 
         <GridPane vgap="5" >
