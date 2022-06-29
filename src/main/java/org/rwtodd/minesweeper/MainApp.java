@@ -6,16 +6,12 @@
 package org.rwtodd.minesweeper;
 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Camera;
 import javafx.scene.Parent;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 

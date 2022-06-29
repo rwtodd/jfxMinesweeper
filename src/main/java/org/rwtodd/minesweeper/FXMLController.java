@@ -5,12 +5,13 @@
 package org.rwtodd.minesweeper;
 
 import java.io.IOException;
-import javafx.scene.control.Label;
-import java.util.List;
 import java.util.ArrayList;
-import javafx.animation.*;
+import java.util.List;
+
+import javafx.animation.Animation;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Transition;
 import javafx.application.Platform;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
