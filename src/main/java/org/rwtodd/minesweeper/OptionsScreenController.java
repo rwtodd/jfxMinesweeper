@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
@@ -18,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author richa
  */
-public class OptionsScreenController implements Initializable {
+public class OptionsScreenController {
 
     private boolean wantsNewGame;  // did the user press "New Game"?
     @FXML private Slider rows, cols, bombs;
@@ -27,8 +26,8 @@ public class OptionsScreenController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    public void initialize() {
         rows.valueProperty().addListener((obs, oldval, newVal) ->
           rows.setValue(Math.round(newVal.doubleValue())));
         cols.valueProperty().addListener((obs, oldval, newVal) ->

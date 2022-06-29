@@ -6,11 +6,9 @@ package org.rwtodd.minesweeper;
 
 import java.io.IOException;
 import javafx.scene.control.Label;
-import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.animation.*;
-import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +16,6 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -35,7 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class FXMLController implements Initializable {
+public class FXMLController {
 
     @FXML private Pane board;
     @FXML private StackPane overlays;
@@ -227,8 +224,8 @@ public class FXMLController implements Initializable {
 
     }
     
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         Platform.runLater(this::setupBoard);
     }
     
