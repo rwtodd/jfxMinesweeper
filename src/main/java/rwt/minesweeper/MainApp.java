@@ -3,7 +3,7 @@
  * MIT License
  */
 
-package org.rwtodd.minesweeper;
+package rwt.minesweeper;
 
 import javafx.application.Application;
 import javafx.application.Platform;

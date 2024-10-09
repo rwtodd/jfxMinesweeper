@@ -1,8 +1,7 @@
-module org.rwtodd.minesweeper {
+module rwt.minesweeper {
    requires javafx.fxml;
    requires javafx.controls;
    requires transitive javafx.graphics;
-   exports org.rwtodd.minesweeper to javafx.graphics;
-   opens org.rwtodd.minesweeper to javafx.fxml;
-   // opens org.rwtodd.minesweeper.fxml to javafx.fxml;
+   exports rwt.minesweeper to javafx.graphics;
+   opens rwt.minesweeper to javafx.fxml;
 }

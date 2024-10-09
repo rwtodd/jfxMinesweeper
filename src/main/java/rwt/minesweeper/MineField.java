@@ -2,7 +2,7 @@
  * Copyright Richard Todd. I put the code under the
  * MIT License
  */
-package org.rwtodd.minesweeper;
+package rwt.minesweeper;
 
 import java.util.Random;
 

@@ -9,7 +9,7 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"  
       styleClass="mainFxmlClass" 
-      fx:controller="org.rwtodd.minesweeper.OptionsScreenController"
+      fx:controller="rwt.minesweeper.OptionsScreenController"
       spacing="10" 
 >
     <padding>

@@ -7,7 +7,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.rwtodd.minesweeper.FXMLController"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="rwt.minesweeper.FXMLController"
    onKeyTyped="#keyTyped" 
 >
     <stylesheets>
